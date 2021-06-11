@@ -1,0 +1,46 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "JENHURST",
+            "type": "python",
+            "request": "launch",
+            "program": "gp_core",
+            "console": "integratedTerminal",
+            "args": [
+                "-i",
+                "/mnt/c/Data/JENHURST FF rev G_Cleaned.xmlx",
+                "-c",
+                "False"
+            ]
+        },
+        {
+            "name": "NT41 Trusdale",
+            "type": "python",
+            "request": "launch",
+            "program": "gp_core",
+            "console": "integratedTerminal",
+            "args": [
+                "-i",
+                "/mnt/c/Data/NT41 TRUSDALE.xmlx",
+                "--num-agents",
+                "100",
+                "-d"
+            ]
+        },
+        {
+            "name": "Cartwright",
+            "type": "python",
+            "request": "launch",
+            "program": "gp_core",
+            "console": "integratedTerminal",
+            "args": [
+                "-i",
+                "/mnt/c/Data/cartwright_dom.3.xmlx",
+                "--num-agents",
+                "100",
+                "-d"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,41 @@
+{
+    "languageserver": {
+        "ccls": {
+            "command": "ccls",
+            "filetypes": [
+                "c",
+                "cpp",
+                "objc",
+                "objcpp"
+            ],
+            "rootPatterns": [
+                ".ccls",
+                "compile_commands.json",
+                ".vim/",
+                ".git/",
+                ".hg/"
+            ],
+            "initializationOptions": {
+                "cache": {
+                    "directory": "/tmp/ccls"
+                }
+            }
+        }
+    },
+    "suggest.noselect": false,
+    "coc.preferences.formatOnSaveFiletypes": [
+        "groovy",
+        "json",
+        "java",
+        "sh"
+    ],
+    "explorer.position": "floating",
+    "explorer.quitOnOpen": true,
+    "java.completion.filteredTypes": [],
+    "java.completion.overwrite": false,
+    "java.contentProvider.preferred": "cfr",
+    "java.format.settings.url": "~/.config/nvim/eclipse-formatter.xml",
+    "java.jdt.ls.vmargs": "-javaagent:~/.lombok.jar",
+    "java.maxConcurrentBuilds": 2,
+    "java.saveActions.organizeImports": true
+}

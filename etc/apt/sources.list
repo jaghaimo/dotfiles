@@ -1,0 +1,4 @@
+deb http://deb.debian.org/debian bullseye main contrib non-free
+
+deb http://deb.debian.org/debian buster main
+deb http://deb.debian.org/debian buster-backports main

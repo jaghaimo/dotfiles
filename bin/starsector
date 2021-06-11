@@ -1,0 +1,11 @@
+#!/bin/bash
+
+starsector="/mnt/c/Starsector/"
+mods="mods"
+./gradlew release
+release=`find . -name \*.zip -type f -exec stat -c '%Y %n' {} \; | sort -nr | awk 'NR==1 {print $2}'`
+cp ${release} ${starsector}/${mods}
+pushd ${starsector}/${mods}
+unzip -o ${release}
+popd
+cmd.exe /C "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Starsector\Starsector.lnk"
