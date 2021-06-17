@@ -16,7 +16,6 @@ backup:
 	cp ~/.ssh/config dotfiles/.ssh
 	cp ~/.tmux.conf dotfiles/
 	cp ~/.zshrc dotfiles/
-	cp ~/.zshrc.local dotfiles/
 	cp ~/.Xresources dotfiles/
 
 ## install	: Install new configuration files

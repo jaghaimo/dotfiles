@@ -100,11 +100,52 @@ source $ZSH/oh-my-zsh.sh
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-[[ ! -f ~/.zshrc.local ]] || source ~/.zshrc.local
-[[ ! -f ~/.profile ]] || source ~/.profile
 
+# git aliases
+alias ga="git add"
+alias gb="git checkout -b"
+alias gc="git commit -v -m"
+alias gl="git log"
+alias gs='git status'
+alias gco="git-checkout origin"
+alias gcu="git-checkout upstream"
+alias gca='git commit --amend --no-edit'
+alias gcb='git branch -D $(git branch --list | grep -v $(git rev-parse --abbrev-ref HEAD))'
+alias gfa='git fetch --all --prune'
+alias gfo='git fetch origin --prune'
+alias gfu='git fetch upstream --prune'
+alias gpo='git push origin $(git rev-parse --abbrev-ref HEAD)'
+alias gpof='git push origin $(git rev-parse --abbrev-ref HEAD) --force'
+alias gpu='git push upstream $(git rev-parse --abbrev-ref HEAD)'
+alias gpuf='git push upstream $(git rev-parse --abbrev-ref HEAD) --force'
+
+# git setup
+alias git-jag="git config user.name Jaghaimo;git config user.email 1764586+jaghaimo@users.noreply.github.com"
+
+# daisy
+alias gp_core="python3 -m gp_core"
+alias gp_profile="python3 -m cProfile -o profile_output gp_core/__main__.py"
+
+# other aliases
+alias installed-apt="comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)"
+alias k=kubectl
+alias p10kupdate="git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull"
+alias rsync="rsync --info=progress2"
+alias sau="sudo apt update && sudo apt dist-upgrade && sudo apt autoremove --purge"
+alias tolower="ls | sed -n 's/.*/mv \"&\" \$(tr \"[A-Z]\" \"[a-z]\" <<< \"&\")/p' | bash"
+
+# quick edits
+alias cocrc='vim ~/.config/nvim/coc-settings.json'
+alias i3rc='vim ~/.config/i3/config'
+alias vimrc='vim ~/.config/nvim/init.vim'
+alias zshrc='vim ~/.zshrc.local'
+
+# others
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f ~/.profile ]] || source ~/.profile
+[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
+export FZF_DEFAULT_COMMAND='fdfind --type f'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export PATH="$PATH:$HOME/bin:$HOME/.config/composer/vendor/bin"
+source <(kubectl completion zsh)
+complete -F __start_kubectl k
