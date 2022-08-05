@@ -1,0 +1,9 @@
+# pack-refs with: peeled fully-peeled sorted 
+00489bf9f6f83d211a71d8bd7c06da3f92aee0b7 refs/remotes/origin/issue-branch
+75eb2e97acd74660779fed8380989ee7891eec56 refs/remotes/origin/master
+5bec08ddeb815c85677da88797c26a308dcd9761 refs/remotes/origin/update_readme
+21a6a9d02a27ecf61364b98fa80afa596c76b424 refs/remotes/origin/vscode_readme
+df22bf1ac6f2a0d883430a00ce7b85fc8024c83f refs/tags/0.1.0
+d13f47b0c20923eb13335f7effc5e8ec4431a5cd refs/tags/0.1.1
+4834062eb756dfd114b4b5ea803802f346977e04 refs/tags/0.1.2
+2d1f4c3fd3abbcee8383fea1fb9c52bb56723d69 refs/tags/0.1.3
