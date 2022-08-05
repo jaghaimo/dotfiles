@@ -1,0 +1,8 @@
+#!/bin/bash
+BT_DEV=44:18:FD:CD:3F:A1
+    <<<"agent on
+    scan on
+      trust $BT_DEV
+       pair $BT_DEV
+    connect $BT_DEV
+    quit" bluetoothctl

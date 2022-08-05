@@ -1,0 +1,4 @@
+git fetch $1
+git checkout $1/$2
+git branch -D $2
+git checkout -b $2

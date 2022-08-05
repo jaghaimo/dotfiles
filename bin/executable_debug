@@ -1,0 +1,2 @@
+rm -f ~/input/debug.xmlx
+ln -s $(readlink -f $1) ~/input/debug.xmlx

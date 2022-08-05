@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for FILE in `find -name design.pdf`; do
+    DIR=$(dirname "$FILE")
+    NEWFILE=$(basename "$DIR")
+    cp "$FILE" "$NEWFILE.pdf"
+done
