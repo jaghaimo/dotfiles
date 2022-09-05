@@ -75,7 +75,20 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(fzf gradle z)
+plugins=(
+    docker
+    docker-compose
+    fzf
+    git
+    gradle
+    helm
+    kubectl
+    poetry
+    sudo
+    tig
+    ubuntu
+    z
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -101,40 +114,18 @@ source $ZSH/oh-my-zsh.sh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
-# git aliases
-alias g="git"
-alias ga="git add"
-alias gl="git lg"
-alias gr="git rebase -i"
-alias gs='git status'
-alias gca="git commit --amend"
-alias gcb="git checkout -b"
-alias gcm="git commit -m"
-
-# git fetchig aliases
-alias gfa='git fetch --all --prune'
-alias gfo='git fetch origin --prune'
-alias gfu='git fetch upstream --prune'
-
-# git pushing aliases
-alias gpo='git push origin $(git rev-parse --abbrev-ref HEAD)'
-alias gpof='git push origin $(git rev-parse --abbrev-ref HEAD) --force'
-alias gpu='git push upstream $(git rev-parse --abbrev-ref HEAD)'
-alias gpuf='git push upstream $(git rev-parse --abbrev-ref HEAD) --force'
-
 # git setup
 alias git-clean-branches='git branch -D $(git branch --list | grep -v $(git rev-parse --abbrev-ref HEAD))'
 alias git-config-jag="git config user.name Jaghaimo;git config user.email 1764586+jaghaimo@users.noreply.github.com"
 alias git-dangling="git fsck --lost-found --dangling 2> /dev/null | cut -d ' ' -f 3 | xargs git log --oneline --no-walk"
 
-# daisy
+# gp_core
 alias gp_activate="source venv/bin/activate"
 alias gp_core="python3 -m gp_core"
 alias gp_profile="python3 -m cProfile -o profile_output gp_core/__main__.py"
 
 # other aliases
 alias installed-apt="comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)"
-alias k=kubectl
 alias p10kupdate="git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull"
 alias rsync="rsync --info=progress2"
 alias sau="sudo apt update && sudo apt dist-upgrade && sudo apt autoremove --purge"
@@ -153,6 +144,4 @@ alias zshrc='vim ~/.zshrc.local'
 export FZF_DEFAULT_COMMAND='fdfind --type f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export PATH="$PATH:$HOME/.local/bin:$HOME/.config/composer/vendor/bin"
-source <(kubectl completion zsh)
-complete -F __start_kubectl k
 unset PAGER
