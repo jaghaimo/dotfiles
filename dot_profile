@@ -26,3 +26,4 @@ fi
 if [ -d "$HOME/.cargo/bin" ] ; then
     PATH="$HOME/.cargo/bin:$PATH"
 fi
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
