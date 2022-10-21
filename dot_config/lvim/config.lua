@@ -11,7 +11,7 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "tokyonight-storm"
+lvim.colorscheme = "tokyonight"
 -- lvim.colorscheme = "gruvbox"
 -- vim.o.background = "dark"
 -- to disable icons and use a minimalist setup, uncomment the following
@@ -47,8 +47,8 @@ lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 -- }
 
 -- Change theme settings
--- lvim.builtin.theme.options.dim_inactive = true
--- lvim.builtin.theme.options.style = "storm"
+lvim.builtin.theme.options.dim_inactive = true
+lvim.builtin.theme.options.style = "storm"
 
 -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
@@ -61,6 +61,11 @@ lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 --   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 -- }
+lvim.builtin.which_key.mappings["t"] = {
+  name = "+Testing",
+  t = { "<cmd>lua require(\"neotest\").run.run()<CR>", "Nearest test" },
+  f = { "<cmd>lua require(\"neotest\").run.run(vim.fn.expand(\"%\"))<CR>", "Whole file" },
+}
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
