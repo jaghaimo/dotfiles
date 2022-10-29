@@ -120,9 +120,28 @@ lvim.builtin.treesitter.highlight.enable = true
 
 -- ---configure a server manually. !!Requires `:LvimCacheReset` to take effect!!
 -- ---see the full default list `:lua print(vim.inspect(lvim.lsp.automatic_configuration.skipped_servers))`
+-- check the lspconfig documentation for a list of all possible options
+-- Use pylsp instead of pyright
 -- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
--- local opts = {} -- check the lspconfig documentation for a list of all possible options
--- require("lvim.lsp.manager").setup("pylsp", opts)
+-- local lspconfig = require "lspconfig"
+-- lspconfig.pylsp.setup {
+-- on_attach = on_attach,
+-- capabilities = capabilities,
+-- settings = {
+--   pylsp = {
+--     configurationSources = { "flake8" },
+--     plugins = {
+--       autopep8 = { enabled = false },
+--       flake8 = { enabled = true },
+--       mccabe = { enabled = false },
+--       pyflakes = { enabled = false },
+--       pycodestyle = { enabled = false },
+--       pylint = { enabled = false },
+--       yapf = { enabled = false },
+--     },
+--   }
+-- }
+-- }
 
 -- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. !!Requires `:LvimCacheReset` to take effect!!
 -- ---`:LvimInfo` lists which server(s) are skipped for the current filetype
@@ -176,26 +195,34 @@ linters.setup {
 
 -- Additional Plugins
 lvim.plugins = {
-  -- {
-  --   "folke/trouble.nvim",
-  --   cmd = "TroubleToggle",
-  -- },
+  {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
+  },
   {
     "nacro90/numb.nvim",
     event = "BufRead",
     config = function()
       require("numb").setup {
-        show_numbers = true, -- Enable 'number' for the window while peeking
-        show_cursorline = true, -- Enable 'cursorline' for the window while peeking
+        show_numbers = true,
+        show_cursorline = true,
       }
     end,
   },
+  -- {
+  --   "ahmedkhalf/lsp-rooter.nvim",
+  --   event = "BufRead",
+  --   config = function()
+  --     require("lsp-rooter").setup()
+  --   end,
+  -- },
   {
-    "ahmedkhalf/lsp-rooter.nvim",
-    event = "BufRead",
+    'jinh0/eyeliner.nvim',
     config = function()
-      require("lsp-rooter").setup()
-    end,
+      require 'eyeliner'.setup {
+        highlight_on_key = true
+      }
+    end
   },
   {
     "ggandor/lightspeed.nvim",
@@ -224,24 +251,24 @@ lvim.plugins = {
     event = "BufRead",
     config = function() require "lsp_signature".on_attach() end,
   },
-  {
-    "karb94/neoscroll.nvim",
-    event = "WinScrolled",
-    config = function()
-      require('neoscroll').setup({
-        -- All these keys will be mapped to their corresponding default scrolling animation
-        mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>', '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
-        hide_cursor = true, -- Hide cursor while scrolling
-        stop_eof = true, -- Stop at <EOF> when scrolling downwards
-        use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
-        respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
-        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-        easing_function = nil, -- Default easing function
-        pre_hook = nil, -- Function to run before the scrolling animation starts
-        post_hook = nil, -- Function to run after the scrolling animation ends
-      })
-    end
-  },
+  -- {
+  --   "karb94/neoscroll.nvim",
+  --   event = "WinScrolled",
+  --   config = function()
+  --     require('neoscroll').setup({
+  --       -- All these keys will be mapped to their corresponding default scrolling animation
+  --       mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>', '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
+  --       hide_cursor = true, -- Hide cursor while scrolling
+  --       stop_eof = true, -- Stop at <EOF> when scrolling downwards
+  --       use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
+  --       respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+  --       cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+  --       easing_function = nil, -- Default easing function
+  --       pre_hook = nil, -- Function to run before the scrolling animation starts
+  --       post_hook = nil, -- Function to run after the scrolling animation ends
+  --     })
+  --   end
+  -- },
   {
     "ethanholz/nvim-lastplace",
     event = "BufRead",

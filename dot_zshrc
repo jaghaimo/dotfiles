@@ -130,6 +130,7 @@ alias p10kupdate="git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerleve
 alias rsync="rsync --info=progress2"
 alias sau="sudo apt update && sudo apt dist-upgrade && sudo apt autoremove --purge"
 alias tolower="ls | sed -n 's/.*/mv \"&\" \$(tr \"[A-Z]\" \"[a-z]\" <<< \"&\")/p' | bash"
+alias vim="lvim"
 
 # quick edits
 alias cocrc='vim ~/.config/nvim/coc-settings.json'
