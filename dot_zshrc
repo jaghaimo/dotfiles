@@ -146,3 +146,7 @@ export FZF_DEFAULT_COMMAND='fdfind --type f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export PATH="$PATH:$HOME/.local/bin:$HOME/.config/composer/vendor/bin"
 unset PAGER
+
+# workaround for WSL2-X11
+export DISPLAY=$(ip route list default | awk '{print $3}'):0
+export LIBGL_ALWAYS_INDIRECT=1
