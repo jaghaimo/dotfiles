@@ -15,3 +15,5 @@ echo \
 
 sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io
+echo Change to legacy iptables
+sudo update-alternatives --config iptables
