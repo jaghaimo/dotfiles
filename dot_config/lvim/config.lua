@@ -302,13 +302,19 @@ lvim.plugins = {
 }
 
 -- DAP setup
-local dap = require('dap')
+local dap, dapui = require("dap"), require("dapui")
 dap.adapters.python = {
   type = 'executable';
   command = '.venv/bin/python';
   args = { '-m', 'debugpy.adapter' };
 }
 dap.configurations.python = {}
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 vim.api.nvim_create_autocmd("BufEnter", {
