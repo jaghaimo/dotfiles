@@ -32,6 +32,16 @@ lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 -- override a default keymapping
 -- lvim.keys.normal_mode["<C-q>"] = ":q<cr>" -- or vim.keymap.set("n", "<C-q>", ":q<cr>" )
 
+-- substitute.nvim
+vim.keymap.set("n", "t", "<cmd>lua require('substitute').operator()<cr>", { noremap = true })
+vim.keymap.set("n", "tt", "<cmd>lua require('substitute').line()<cr>", { noremap = true })
+vim.keymap.set("n", "T", "<cmd>lua require('substitute').eol()<cr>", { noremap = true })
+vim.keymap.set("x", "t", "<cmd>lua require('substitute').visual()<cr>", { noremap = true })
+vim.keymap.set("n", "tx", "<cmd>lua require('substitute.exchange').operator()<cr>", { noremap = true })
+vim.keymap.set("n", "txx", "<cmd>lua require('substitute.exchange').line()<cr>", { noremap = true })
+vim.keymap.set("x", "X", "<cmd>lua require('substitute.exchange').visual()<cr>", { noremap = true })
+vim.keymap.set("n", "txc", "<cmd>lua require('substitute.exchange').cancel()<cr>", { noremap = true })
+
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 -- local _, actions = pcall(require, "telescope.actions")
@@ -159,6 +169,7 @@ lvim.builtin.treesitter.highlight.enable = true
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "black", filetypes = { "python" } },
+  { command = "csharpier", filetypes = { "cs" } },
   { command = "isort", filetypes = { "python" } },
   -- {
   --   -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
@@ -191,13 +202,106 @@ linters.setup {
 
 -- Additional Plugins
 lvim.plugins = {
+  -- Substitute and exchange operations (keys defined at the top)
   {
-    'm-demare/hlargs.nvim',
-    requires = { 'nvim-treesitter/nvim-treesitter' },
+    "gbprod/substitute.nvim",
     config = function()
-      require('hlargs').setup()
+      require("substitute").setup({
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      })
     end,
   },
+  -- Press tab in insert mode to escape from "" or {}
+  {
+    "abecodes/tabout.nvim",
+    config = function()
+      require('tabout').setup {
+        tabkey = '<Tab>', -- key to trigger tabout, set to an empty string to disable
+        backwards_tabkey = '<S-Tab>', -- key to trigger backwards tabout, set to an empty string to disable
+        act_as_tab = true, -- shift content if tab out is not possible
+        act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
+        default_tab = '<C-t>', -- shift default action (only at the beginning of a line, otherwise <TAB> is used)
+        default_shift_tab = '<C-d>', -- reverse shift default action,
+        enable_backwards = true, -- well ...
+        completion = true, -- if the tabkey is used in a completion pum
+        tabouts = {
+          { open = "'", close = "'" },
+          { open = '"', close = '"' },
+          { open = '`', close = '`' },
+          { open = '(', close = ')' },
+          { open = '[', close = ']' },
+          { open = '{', close = '}' }
+        },
+        ignore_beginning = true, --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
+        exclude = {} -- tabout will ignore these filetypes
+      }
+    end,
+    wants = { 'nvim-treesitter' }, -- or require if not used so far
+    after = { 'nvim-cmp' } -- if a completion plugin is using tabs load it before
+  },
+  -- Better text objects, support for functions and classes via Treesitter
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    config = function()
+      require 'nvim-treesitter.configs'.setup {
+        textobjects = {
+          select = {
+            enable = true,
+
+            -- Automatically jump forward to textobj, similar to targets.vim
+            lookahead = true,
+
+            keymaps = {
+              -- You can use the capture groups defined in textobjects.scm
+              ["af"] = "@function.outer",
+              ["if"] = "@function.inner",
+              ["ac"] = "@class.outer",
+              -- You can optionally set descriptions to the mappings (used in the desc parameter of
+              -- nvim_buf_set_keymap) which plugins like which-key display
+              ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+            },
+            -- You can choose the select mode (default is charwise 'v')
+            --
+            -- Can also be a function which gets passed a table with the keys
+            -- * query_string: eg '@function.inner'
+            -- * method: eg 'v' or 'o'
+            -- and should return the mode ('v', 'V', or '<c-v>') or a table
+            -- mapping query_strings to modes.
+            selection_modes = {
+              ['@parameter.outer'] = 'v', -- charwise
+              ['@function.outer'] = 'V', -- linewise
+              ['@class.outer'] = '<c-v>', -- blockwise
+            },
+            -- If you set this to `true` (default is `false`) then any textobject is
+            -- extended to include preceding or succeeding whitespace. Succeeding
+            -- whitespace has priority in order to act similarly to eg the built-in
+            -- `ap`.
+            --
+            -- Can also be a function which gets passed a table with the keys
+            -- * query_string: eg '@function.inner'
+            -- * selection_mode: eg 'v'
+            -- and should return true of false
+            include_surrounding_whitespace = true,
+          },
+        },
+      }
+    end,
+  },
+  -- Support for camelCase, underscore_case, etc. in motions
+  { 'chaoren/vim-wordmotion' },
+  -- Support for .editorconfig
+  { 'gpanders/editorconfig.nvim' },
+  -- Highlight arguments throught the function
+  -- {
+  --   'm-demare/hlargs.nvim',
+  --   requires = { 'nvim-treesitter/nvim-treesitter' },
+  --   config = function()
+  --     require('hlargs').setup()
+  --   end,
+  -- },
+  -- Clipboard manager
   {
     "AckslD/nvim-neoclip.lua",
     requires = {
@@ -208,10 +312,12 @@ lvim.plugins = {
       require('telescope').load_extension('neoclip')
     end,
   },
+  -- Pretty list of diagnostics, errors, etc.
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
   },
+  -- Preview / jump to :XX
   {
     "nacro90/numb.nvim",
     event = "BufRead",
@@ -222,25 +328,21 @@ lvim.plugins = {
       }
     end,
   },
-  -- {
-  --   "ahmedkhalf/lsp-rooter.nvim",
-  --   event = "BufRead",
-  --   config = function()
-  --     require("lsp-rooter").setup()
-  --   end,
-  -- },
+  -- Highlight first letters for easier motion
   {
     'jinh0/eyeliner.nvim',
     config = function()
       require 'eyeliner'.setup {
         highlight_on_key = true
       }
-    end
+    end,
   },
+  -- New motion 's' followed by two letters where you want to jump
   {
     "ggandor/lightspeed.nvim",
     event = "BufRead",
   },
+  -- Testing framework
   {
     "nvim-neotest/neotest",
     requires = {
@@ -259,29 +361,13 @@ lvim.plugins = {
       })
     end,
   },
+  -- Show function signature while you type
   {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
     config = function() require "lsp_signature".on_attach() end,
   },
-  -- {
-  --   "karb94/neoscroll.nvim",
-  --   event = "WinScrolled",
-  --   config = function()
-  --     require('neoscroll').setup({
-  --       -- All these keys will be mapped to their corresponding default scrolling animation
-  --       mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>', '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
-  --       hide_cursor = true, -- Hide cursor while scrolling
-  --       stop_eof = true, -- Stop at <EOF> when scrolling downwards
-  --       use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
-  --       respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
-  --       cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-  --       easing_function = nil, -- Default easing function
-  --       pre_hook = nil, -- Function to run before the scrolling animation starts
-  --       post_hook = nil, -- Function to run after the scrolling animation ends
-  --     })
-  --   end
-  -- },
+  -- When opening a file, put cursor at the last place it was
   {
     "ethanholz/nvim-lastplace",
     event = "BufRead",
@@ -295,6 +381,7 @@ lvim.plugins = {
       })
     end,
   },
+  -- Colorful comments
   {
     "folke/todo-comments.nvim",
     event = "BufRead",
@@ -312,12 +399,12 @@ dap.adapters.python = {
   args = { '-m', 'debugpy.adapter' };
 }
 dap.configurations.python = {}
-dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close()
-end
-dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close()
-end
+-- dap.listeners.before.event_terminated["dapui_config"] = function()
+--   dapui.close()
+-- end
+-- dap.listeners.before.event_exited["dapui_config"] = function()
+--   dapui.close()
+-- end
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 vim.api.nvim_create_autocmd("BufEnter", {
