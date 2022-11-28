@@ -12,9 +12,10 @@ an executable
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "tokyonight-storm"
-lvim.builtin.cmp.completion = {
-  completeopt = "menu,menuone,preview"
-}
+lvim.builtin.autopairs.active = false
+-- lvim.builtin.cmp.completion = {
+--   completeopt = "menu,menuone,preview"
+-- }
 -- lvim.colorscheme = "gruvbox"
 -- vim.o.background = "dark"
 -- to disable icons and use a minimalist setup, uncomment the following
@@ -27,10 +28,12 @@ lvim.keys.normal_mode["<C-Space>"] = "ea"
 lvim.keys.normal_mode["<C-s>"] = ":w<CR>"
 lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
+lvim.keys.normal_mode["Y"] = "y$"
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
 -- override a default keymapping
 -- lvim.keys.normal_mode["<C-q>"] = ":q<cr>" -- or vim.keymap.set("n", "<C-q>", ":q<cr>" )
+lvim.lsp.buffer_mappings.normal_mode["gr"] = { "<cmd>Trouble lsp_references<cr>" }
 
 -- substitute.nvim
 vim.keymap.set("n", "t", "<cmd>lua require('substitute').operator()<cr>", { noremap = true })
@@ -61,6 +64,7 @@ vim.keymap.set("n", "txc", "<cmd>lua require('substitute.exchange').cancel()<cr>
 -- }
 
 -- Use which-key to add extra bindings with the leader-key prefix
+lvim.builtin.which_key.mappings["b"]["c"] = { "<cmd>%bd <bar> e# <bar> bd# <CR>", "Close others" }
 lvim.builtin.which_key.mappings["n"] = { "<cmd>Telescope neoclip<CR>", "Neoclip" }
 lvim.builtin.which_key.mappings["r"] = {
   name = "+Trouble",
@@ -78,8 +82,7 @@ lvim.builtin.which_key.mappings["t"] = {
   d = { "<cmd>lua require(\"neotest\").run.run({strategy = \"dap\"})<CR>", "Debug nearest test" },
 }
 
--- TODO: User Config for predefined plugins
--- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
+-- After changing plugin config exit and reopen LunarVim, Run :PackerCompile
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
@@ -171,7 +174,6 @@ formatters.setup {
   { command = "black", filetypes = { "python" } },
   { command = "csharpier", filetypes = { "cs" } },
   { command = "isort", filetypes = { "python" } },
-  { command = "phpcsfixer", filetypes = { "php" }, args = { "--rules=@PhpCsFixer", "fix", "$FILENAME" } },
   -- {
   --   -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
   --   command = "prettier",
@@ -181,6 +183,12 @@ formatters.setup {
   --   ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
   --   filetypes = { "typescript", "typescriptreact" },
   -- },
+}
+
+local null_ls = require("null-ls")
+null_ls.register {
+  null_ls.builtins.formatting.phpcsfixer.with { args = { "--rules=@PhpCsFixer", "--no-interaction", "--quiet", "fix",
+    "$FILENAME" } }
 }
 
 -- -- set additional linters
@@ -193,6 +201,38 @@ linters.setup {
 
 -- Additional Plugins
 lvim.plugins = {
+  -- Nice UI additions
+  {
+    "folke/noice.nvim",
+    config = function()
+      require("noice").setup({
+        lsp = {
+          -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+          override = {
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
+            ["cmp.entry.get_documentation"] = true,
+          },
+        },
+        -- you can enable a preset for easier configuration
+        presets = {
+          bottom_search = true, -- use a classic bottom cmdline for search
+          command_palette = true, -- position the cmdline and popupmenu together
+          long_message_to_split = true, -- long messages will be sent to a split
+          inc_rename = false, -- enables an input dialog for inc-rename.nvim
+          lsp_doc_border = true, -- add a border to hover docs and signature help
+        },
+      })
+    end,
+    requires = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      -- "rcarriga/nvim-notify",
+    }
+  },
   -- Substitute and exchange operations (keys defined at the top)
   {
     "gbprod/substitute.nvim",
@@ -281,10 +321,10 @@ lvim.plugins = {
     end,
   },
   -- Support for camelCase, underscore_case, etc. in motions
-  { 'chaoren/vim-wordmotion' },
+  -- { 'chaoren/vim-wordmotion' },
   -- Support for .editorconfig
   { 'gpanders/editorconfig.nvim' },
-  -- Highlight arguments throught the function
+  -- Highlight arguments throughout the function
   {
     'm-demare/hlargs.nvim',
     requires = { 'nvim-treesitter/nvim-treesitter' },
@@ -311,16 +351,16 @@ lvim.plugins = {
     cmd = "TroubleToggle",
   },
   -- Preview / jump to :XX
-  {
-    "nacro90/numb.nvim",
-    event = "BufRead",
-    config = function()
-      require("numb").setup {
-        show_numbers = true,
-        show_cursorline = true,
-      }
-    end,
-  },
+  -- {
+  --   "nacro90/numb.nvim",
+  --   event = "BufRead",
+  --   config = function()
+  --     require("numb").setup {
+  --       show_numbers = true,
+  --       show_cursorline = true,
+  --     }
+  --   end,
+  -- },
   -- Highlight first letters for easier motion
   {
     'jinh0/eyeliner.nvim',
@@ -355,13 +395,13 @@ lvim.plugins = {
     end,
   },
   -- Show function signature while you type
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "BufRead",
-    config = function()
-      require "lsp_signature".on_attach()
-    end,
-  },
+  -- {
+  --   "ray-x/lsp_signature.nvim",
+  --   event = "BufRead",
+  --   config = function()
+  --     require "lsp_signature".on_attach()
+  --   end,
+  -- },
   -- When opening a file, put cursor at the last place it was
   {
     "ethanholz/nvim-lastplace",
@@ -385,15 +425,15 @@ lvim.plugins = {
     end,
   },
 }
-
 -- DAP setup
-local dap, dapui = require("dap"), require("dapui")
+local dap = require("dap")
 dap.adapters.python = {
   type = 'executable';
   command = '.venv/bin/python';
   args = { '-m', 'debugpy.adapter' };
 }
 dap.configurations.python = {}
+-- local dapui = require("dapui")
 -- dap.listeners.before.event_terminated["dapui_config"] = function()
 --   dapui.close()
 -- end
