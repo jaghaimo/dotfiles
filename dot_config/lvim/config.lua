@@ -168,6 +168,15 @@ lvim.builtin.treesitter.highlight.enable = true
 --   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 -- end
 
+-- -- telescope
+for key, _ in pairs(lvim.builtin.telescope.pickers) do
+  if key ~= "planets" then
+    lvim.builtin.telescope.pickers[key].previewer = nil
+    lvim.builtin.telescope.pickers[key].theme = nil
+    lvim.builtin.telescope.pickers[key].hidden = true
+  end
+end
+
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
@@ -391,6 +400,7 @@ lvim.plugins = {
             dap = { justMyCode = false },
           }),
         },
+        quickfix = { enabled = true, open = false },
       })
     end,
   },
