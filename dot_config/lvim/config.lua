@@ -189,6 +189,11 @@ lvim.plugins = {
   },
   -- Support for camelCase, underscore_case, etc. in motions
   -- { 'chaoren/vim-wordmotion' },
+  -- Support for variable text object (similar to above)
+  {
+    'Julian/vim-textobj-variable-segment',
+    requires = { 'kana/vim-textobj-user' },
+  },
   -- Support for .editorconfig
   { 'gpanders/editorconfig.nvim' },
   -- Highlight arguments throughout the function
@@ -257,6 +262,10 @@ lvim.plugins = {
     end,
   },
 }
+local dap = require("dap")
+dap.listeners.after.event_initialized["dap_exception_breakpoint"] = function()
+  dap.set_exception_breakpoints({ "userUnhandled" })
+end
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 vim.api.nvim_create_autocmd("BufEnter", {
