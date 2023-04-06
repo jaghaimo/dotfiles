@@ -14,7 +14,7 @@ vim.g.clipboard = {
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "tokyonight-storm"
+lvim.colorscheme = "kanagawa"
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -74,7 +74,6 @@ lvim.builtin.treesitter.ensure_installed = {
 	"java",
 	"yaml",
 }
-
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enable = true
 
@@ -105,7 +104,9 @@ linters.setup({
 
 -- Additional Plugins
 lvim.plugins = {
-	-- LSP fidget
+	-- Theme
+	{ "rebelot/kanagawa.nvim" },
+	-- LSP fidget - quick info what the LSP is doing
 	{
 		"j-hui/fidget.nvim",
 		config = function()
@@ -198,13 +199,13 @@ lvim.plugins = {
 	-- Highlight arguments throughout the function
 	{
 		"m-demare/hlargs.nvim",
-		lazy = true,
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		config = function()
 			require("hlargs").setup({
 				highlight = { italic = true },
 			})
 		end,
+		event = "VeryLazy",
 	},
 	-- Clipboard manager
 	{
@@ -264,6 +265,29 @@ lvim.plugins = {
 		config = function()
 			require("todo-comments").setup()
 		end,
+	},
+	-- DAP autocompletion
+	{
+		"rcarriga/cmp-dap",
+		config = function()
+			require("cmp").setup({
+				enabled = function()
+					return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
+				end,
+			})
+			require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+				sources = {
+					{ name = "dap" },
+				},
+			})
+		end,
+		event = "VeryLazy",
+	},
+	-- remove old, untouched buffers
+	{
+		"chrisgrieser/nvim-early-retirement",
+		config = true,
+		event = "VeryLazy",
 	},
 }
 
