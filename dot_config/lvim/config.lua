@@ -283,6 +283,22 @@ lvim.plugins = {
 		end,
 		event = "VeryLazy",
 	},
+	-- init.lua and plugin support
+	{
+		"folke/neodev.nvim",
+		event = "VeryLazy",
+	},
+	-- show signature as you type
+	-- {
+	-- 	"ray-x/lsp_signature.nvim",
+	-- 	dependencies = {
+	-- 		"neovim/nvim-lspconfig",
+	-- 	},
+	-- 	config = function()
+	-- 		require("lsp_signature").setup({})
+	-- 	end,
+	-- 	event = "VeryLazy",
+	-- },
 	-- remove old, untouched buffers
 	{
 		"chrisgrieser/nvim-early-retirement",
@@ -295,6 +311,19 @@ lvim.plugins = {
 local dap = require("dap")
 dap.listeners.after.event_initialized["dap_exception_breakpoint"] = function()
 	dap.set_exception_breakpoints({ "userUnhandled" })
+end
+-- Automatically open dap-ui
+dap.listeners.after.event_initialized["dapui_config"] = function()
+	local dapui = require("dapui")
+	dapui.open()
+end
+dap.listeners.after.event_terminated["dapui_config"] = function()
+	local dapui = require("dapui")
+	dapui.close()
+end
+dap.listeners.after.event_exited["dapui_config"] = function()
+	local dapui = require("dapui")
+	dapui.close()
 end
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)

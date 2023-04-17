@@ -12,7 +12,7 @@ umask 0002
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
     if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
+        . "$HOME/.bashrc"
     fi
 fi
 
@@ -25,5 +25,8 @@ if [ -d "$HOME/.local/bin" ] ; then
 fi
 if [ -d "$HOME/.cargo/bin" ] ; then
     PATH="$HOME/.cargo/bin:$PATH"
+fi
+if [ -d "/home/linuxbrew/.linuxbrew/bin" ] ; then
+    PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 fi
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True

@@ -1,7 +1,9 @@
 #!/bin/bash
 
-for FILE in `find -name *.pdf`; do
-    DIR=$(dirname "$FILE")
-    NEWFILE=$(basename "$DIR")
-    cp "$FILE" "$NEWFILE.pdf"
+SEARCH=${1}
+for FILE in `find -name ${SEARCH}.xmlx -or -name ${SEARCH}.pdf`; do
+  EXT="${FILE##*.}" 
+  DIR=$(dirname "$FILE")
+  NEWFILE=$(basename "$DIR")
+  cp "$FILE" "$NEWFILE.${EXT}"
 done
