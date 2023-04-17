@@ -30,3 +30,4 @@ if [ -d "/home/linuxbrew/.linuxbrew/bin" ] ; then
     PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 fi
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+export MAKEFLAGS="-j4"
