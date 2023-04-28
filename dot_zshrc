@@ -150,3 +150,4 @@ unset PAGER
 # workaround for WSL2-X11
 export DISPLAY=$(ip route list default | awk '{print $3}'):0
 export LIBGL_ALWAYS_INDIRECT=1
+export PYTHON_KEYRING_BACKEND=keyring.backends.fail.Keyring
