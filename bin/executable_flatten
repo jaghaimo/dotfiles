@@ -1,9 +1,16 @@
 #!/bin/bash
 
 SEARCH=${1}
-for FILE in `find -name ${SEARCH}.xmlx -or -name ${SEARCH}.pdf`; do
+for FILE in `find -maxdepth 2 -name ${SEARCH}.xmlx -or -name ${SEARCH}.pdf -or -name ${SEARCH}.pkl`; do
   EXT="${FILE##*.}" 
   DIR=$(dirname "$FILE")
   NEWFILE=$(basename "$DIR")
+  cp "$FILE" "$NEWFILE.${EXT}"
+done
+for FILE in `find -wholename "*/worker?/${SEARCH}.xmlx" -or -wholename "*/worker?/${SEARCH}.pdf" -or -wholename "*/worker?/${SEARCH}.pkl"`; do
+  EXT="${FILE##*.}" 
+  WORKERDIR=$(dirname "$FILE")
+  DIR=$(basename "$WORKERDIR")
+  NEWFILE=$(dirname "$WORKERDIR")_$DIR
   cp "$FILE" "$NEWFILE.${EXT}"
 done
