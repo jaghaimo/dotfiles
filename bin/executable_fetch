@@ -1,0 +1,11 @@
+#!/bin/bash
+
+TAG=${1}
+pushd ~/output
+gsutil -m cp -n -r \
+  "gs://autoframe-diagnostics/output/${TAG}" \
+  .
+cd ${TAG}
+flatten output
+zip ../${TAG}.zip *.pdf *.xmlx
+popd
