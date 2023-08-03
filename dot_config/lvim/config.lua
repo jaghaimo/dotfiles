@@ -82,7 +82,6 @@ local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
 	{ command = "black", filetypes = { "python" } },
 	{ command = "csharpier", filetypes = { "cs" } },
-	{ command = "isort", filetypes = { "python" } },
 	{ command = "stylua", filetypes = { "lua" } },
 })
 
@@ -99,7 +98,6 @@ local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
 	{ command = "codespell" },
 	{ command = "cspell", filetypes = { "md" } },
-	{ command = "flake8", filetypes = { "python" } },
 })
 
 -- Additional Plugins
