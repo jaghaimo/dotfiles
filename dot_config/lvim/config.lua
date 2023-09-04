@@ -98,6 +98,7 @@ local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
 	{ command = "codespell" },
 	{ command = "cspell", filetypes = { "md" } },
+	{ command = "ruff", filetypes = { "python" } },
 })
 
 -- Additional Plugins
