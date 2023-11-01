@@ -80,6 +80,7 @@ plugins=(
     docker-compose
     fzf
     git
+    git-commit
     gradle
     helm
     kubectl
@@ -136,7 +137,7 @@ alias vim="lvim"
 alias cocrc='vim ~/.config/nvim/coc-settings.json'
 alias i3rc='vim ~/.config/i3/config'
 alias vimrc='vim ~/.vimrc'
-alias zshrc='vim ~/.zshrc.local'
+alias zshrc='vim ~/.zshrc'
 
 # others
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
