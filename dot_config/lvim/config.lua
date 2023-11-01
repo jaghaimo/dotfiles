@@ -80,13 +80,18 @@ lvim.builtin.treesitter.highlight.enable = true
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
-	{ command = "black", filetypes = { "python" } },
 	{ command = "csharpier", filetypes = { "cs" } },
 	{ command = "stylua", filetypes = { "lua" } },
 })
 
 -- fix php-cs-fixer
 local null_ls = require("null-ls")
+null_ls.setup({
+    sources = {
+        null_ls.builtins.formatting.ruff,
+        null_ls.builtins.diagnostics.ruff,
+    }
+})
 null_ls.register({
 	null_ls.builtins.formatting.phpcsfixer.with({
 		args = { "--rules=@PhpCsFixer", "--no-interaction", "--quiet", "fix", "$FILENAME" },
