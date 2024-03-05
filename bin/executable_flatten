@@ -7,10 +7,3 @@ for FILE in `find -maxdepth 2 -name ${SEARCH}.xmlx -or -name ${SEARCH}.pdf -or -
   NEWFILE=$(basename "$DIR")
   cp "$FILE" "$NEWFILE.${EXT}"
 done
-for FILE in `find -wholename "*/worker_?/${SEARCH}.xmlx" -or -wholename "*/worker_?/${SEARCH}.pdf" -or -wholename "*/worker_?/${SEARCH}.pkl"`; do
-  EXT="${FILE##*.}" 
-  WORKERDIR=$(dirname "$FILE")
-  DIR=$(basename "$WORKERDIR")
-  NEWFILE=$(dirname "$WORKERDIR")_$DIR
-  cp "$FILE" "$NEWFILE.${EXT}"
-done

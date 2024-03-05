@@ -127,6 +127,7 @@ alias gp_profile="python3 -m cProfile -o profile_output gp_core/__main__.py"
 
 # other aliases
 alias installed-apt="comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)"
+alias k="kubectl"
 alias p10kupdate="git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull"
 alias rsync="rsync --info=progress2"
 alias sau="sudo apt update && sudo apt dist-upgrade && sudo apt autoremove --purge"
