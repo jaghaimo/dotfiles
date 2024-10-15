@@ -1,0 +1,6 @@
+#!/bin/bash
+
+pushd ~/pycharm-community/bin/
+./pycharm.sh
+popd
+

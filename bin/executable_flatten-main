@@ -1,0 +1,9 @@
+#!/bin/bash
+
+SEARCH=${1}
+for FILE in `find -maxdepth 2 -name ${SEARCH}`; do
+  EXT="${FILE##*.}" 
+  DIR=$(dirname "$FILE")
+  NEWFILE=$(basename "$DIR")
+  cp "$FILE" "$NEWFILE.${EXT}"
+done

@@ -1,0 +1,4 @@
+cp output.pkl ~/autoframe/devel/$1.pkl
+cp output.pdf ~/autoframe/devel/$1.pdf
+cp output.xmlx ~/autoframe/devel/$1.xmlx
+ 

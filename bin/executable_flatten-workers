@@ -1,0 +1,10 @@
+#!/bin/bash
+
+SEARCH=${1}
+for FILE in `find -wholename "*/worker_?/${SEARCH}"`; do
+  EXT="${FILE##*.}" 
+  WORKERDIR=$(dirname "$FILE")
+  DIR=$(basename "$WORKERDIR")
+  NEWFILE=$(dirname "$WORKERDIR")_$DIR
+  cp "$FILE" "$NEWFILE.${EXT}"
+done
