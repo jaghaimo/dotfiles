@@ -140,6 +140,11 @@ alias i3rc='vim ~/.config/i3/config'
 alias vimrc='vim ~/.vimrc'
 alias zshrc='vim ~/.zshrc'
 
+# clusters
+alias production='gcloud container clusters get-credentials daisy-production --zone northamerica-northeast1-a --project earlybird'
+alias staging='gcloud container clusters get-credentials daisy-staging --zone europe-west1-b --project earlybird'
+alias staircraft='gcloud container clusters get-credentials daisy-webapp-staircraft --zone europe-west2-a --project earlybird'
+
 # others
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 [[ ! -f ~/.profile ]] || source ~/.profile
